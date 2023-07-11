@@ -4,34 +4,49 @@
 
 let url = 'https://2u-data-curriculum-team.s3.amazonaws.com/dataviz-classroom/v1.1/14-Interactive-Web-Visualizations/02-Homework/samples.json'
 
-let names = []
-let values = []
-
 d3.json(url).then(d=>{
-    console.log(d)
+    // console.log(d)
+    
+    let names = []
+    let values = []
+    let labels = []
+    let samples = d.samples
+    let user_id = "940"
+    samples = samples.filter(d => d.id == user_id)[0]
+    console.log(samples)
+    names = samples.otu_ids.slice(0,10)
+    values = samples.sample_values.slice(0,10)
+    labels = samples.otu_labels.slice(0,10)
+    // //or (let  i = 0; i < d.samples.length; i++) {
 
-    for (let  i = 0; i < d.length; i++) {
-        
-        let data_i = d[i]
+    //   //  let data_i = d.samples[i]
 
-        //console.log(data_i)
+    //     //console.log(data_i)
 
-        names.push(data_i.samples.otu_ids)
-        values.push(data_i.samples.sample_values)
+    //     names.push(data_i.otu_ids)
+    //     values.push(data_i.sample_values)
 
-        //row.append('td').text(data_i.samples.capsule_serial)
-        //row.append('td').text(data_i.samples.details)
+    //     //row.append('td').text(data_i.samples.capsule_serial)
+    //     //row.append('td').text(data_i.samples.details)
 
+    // }
+
+    // console.log(names)
+
+    let trace1 = {
+        x: names,
+        y: values,
+        text : labels,
+        type: 'bar'
     }
-
-    d3
-    .select('ul')          // Select the HTML tag 'body'
-    .selectAll('li')          // Select 'imaginary' paragraphs
-    .data(d)                 // bind the data (d) to those imaginary p-tags
-    .enter()                 // select the imaginary paragraphs...
-    .append('li')             // for each imaginary paragraphs.. apend one -> insert one paragraph per data entry
-    .text(d=>d.samples.otu_ids)    // add text to each paragraph, the text comes out of each 'full_name' of each data entry
-
+    
+    let traceData = [trace1]
+    
+    let layout = {
+        title: '1st plot'
+    }
+    
+    Plotly.newPlot('bar', traceData, layout)
 })
 
 /**
@@ -45,16 +60,4 @@ d3.json(url).then(d=>{
 //let names = samples.map(d => data_i.samples.otu_ids)
 //let values = samples.map(d => data_i.samples.sample_values)
 
-let trace1 = {
-    x: names,
-    y: values,
-    type: 'bar'
-}
 
-let traceData = [trace1]
-
-let layout = {
-    title: '1st plot'
-}
-
-Plotly.newPlot('bar', traceData, layout)
